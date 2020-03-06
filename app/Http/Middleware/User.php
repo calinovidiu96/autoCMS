@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
+
 class User
 {
     /**
@@ -19,8 +20,8 @@ class User
         if(Auth::check()){
             if(Auth::user()->isUser()){
                 return $next($request);
-            }
-            return redirect('/');
+            } 
         }
+        return redirect('/');
     }
 }

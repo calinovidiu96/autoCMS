@@ -7,15 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 class Vehicle extends Model
 {
     //
+
     protected $fillable = [
-        'name', 'year', 'cmc', 'horsepower', 'fuel'
+        'id','name', 'model', 'year', 'cmc', 'horsepower', 'fuel'
     ];
 
     public function user(){
         return $this->belongsTo('App\User');
     }
 
-    public function operation(){
+    public function operations(){
         return $this->hasMany('App\Operation');
     }
+
+    public function visits()
+    {
+        return $this->hasMany('App\Visit');
+    }
+
 }

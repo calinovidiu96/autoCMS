@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOperationsTable extends Migration
+class CreateVisitsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,17 @@ class CreateOperationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('operations', function (Blueprint $table) {
+        Schema::create('visits', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('vehicle_id')->unsigned();
-            $table->string('name');
-            $table->text('parts');
-            $table->integer('price')->unsigned();
+            $table->integer('user_id')->unsigned();
+            $table->string('operation_name');
+            $table->date('schedule_date');
             $table->timestamps();
+
+            $table->foreign('vehicle_id')
+                  ->references('id')->on('vehicles')
+                  ->onDelete('cascade');
         });
     }
 
@@ -30,6 +34,6 @@ class CreateOperationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('operations');
+        Schema::dropIfExists('visits');
     }
 }

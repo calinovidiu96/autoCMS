@@ -23,16 +23,32 @@ Route::get('/logout', ['as' => 'logout', 'uses' => 'Auth\LoginController@logout'
 
 Route::group(['middleware'=>'user'], function(){
 
-    Route::resource('user', 'UserController',['names'=>[
-        'index'=>'users.index',
-    ]]);
+    Route::get('/user', 'UserController@index');
     
-    Route::resource('users/vehicles', 'UserVehiclesController',['names'=>[
-       
-        'create'=>'users.vehicles.create',
-        'store'=>'users.vehicles.store',
+    Route::resource('user/vehicles', 'UserVehiclesController',['names'=>[
+        'index'=>'user.vehicles.index',
+        'create'=>'user.vehicles.create',
+        'edit'=>'user.vehicles.edit',
+        'store'=>'user.vehicles.store',
+        
+    ]]);
+
+    Route::resource('user/operations', 'UserOperationsController',['names'=>[
+        // 'index'=>'user.operations.index',
+        'show'=>'user.operations.show',
+        'edit'=>'user.operations.edit',
     
     ]]);
+
+    Route::resource('user/visits', 'UserVisitsController',['names'=>[
+        'index'=>'user.visits.index',
+        'create'=>'user.visits.create',
+
+        'edit'=>'user.visits.edit',
+
+    ]]);
+
+    
 
 });
 

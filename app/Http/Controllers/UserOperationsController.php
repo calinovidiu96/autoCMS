@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Auth;
+use App\Vehicle;
+use App\Operation;
 
 use Illuminate\Http\Request;
 
@@ -14,6 +17,7 @@ class UserOperationsController extends Controller
     public function index()
     {
         //
+      
     }
 
     /**
@@ -24,6 +28,9 @@ class UserOperationsController extends Controller
     public function create()
     {
         //
+
+        return view('user.operations.create');
+
     }
 
     /**
@@ -35,7 +42,36 @@ class UserOperationsController extends Controller
     public function store(Request $request)
     {
         //
+        // $user = Auth::user();
+
+        // $data = [
+        //     'vehicle_id' => $user->vehicles()->id,
+        //     'name' => $request->name,
+        //     'parts' => $request->parts,
+        //     'price' => $request->price,
+        // ];
+
+        $data = $request->all();
+
+        $validatedData = $request->validate([
+            'name'       => 'required',
+            'parts'      => 'required',
+            'price'        => 'required',
+        ],
+        [
+            'name.required'       => 'The operation name is required',
+            'parts.required'      => 'The parts changed is required',
+            'price.required'        => 'The price  is required',
+        ]);
+        
+        Operation::create($data);
+
+
+        return redirect()->back();
+
     }
+
+
 
     /**
      * Display the specified resource.
@@ -46,6 +82,12 @@ class UserOperationsController extends Controller
     public function show($id)
     {
         //
+        $userId = Auth::user()->id;
+        $vehicles = Vehicle::where('user_id',$userId)->get();
+
+        $vehicle = Vehicle::findOrFail($id);
+        $operations = Operation::where("vehicle_id", "=", $vehicle->id)->get();
+        return view('user.operations.show', compact('operations', 'vehicle','vehicles'));
     }
 
     /**
@@ -57,6 +99,11 @@ class UserOperationsController extends Controller
     public function edit($id)
     {
         //
+        $userId = Auth::user()->id;
+        $vehicles = Vehicle::where('user_id',$userId)->get();
+        
+        $operation = Operation::findOrFail($id);
+        return view('user.operations.edit', compact('vehicles','operation'));
     }
 
     /**
@@ -68,7 +115,24 @@ class UserOperationsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+    
+        $userId = Auth::user()->id;
+        $vehicles = Vehicle::where('user_id',$userId)->get();
+
+        $validatedData = $request->validate([
+            'name'       => 'required',
+            'parts'      => 'required',
+            'price'        => 'required',
+        ],
+        [
+            'name.required'       => 'The operation name is required',
+            'parts.required'      => 'The parts changed is required',
+            'price.required'        => 'The price  is required',
+        ]);
+
+
+        Operation::findOrFail($id)->update($request->all());
+        return view('user.vehicles.index', compact('vehicles'));
     }
 
     /**
@@ -80,5 +144,7 @@ class UserOperationsController extends Controller
     public function destroy($id)
     {
         //
+        Operation::findOrFail($id)->delete();
+        return redirect()->back();
     }
 }

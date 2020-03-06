@@ -4,12 +4,13 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Operation extends Model
+class Visit extends Model
 {
     //
     protected $fillable = [
-        'name', 'vehicle_id', 'parts', 'price'
+       'vehicle_id', 'user_id', 'vehicle_name', 'operation_name', 'schedule_date'
     ];
+
 
     public function vehicle()
     {

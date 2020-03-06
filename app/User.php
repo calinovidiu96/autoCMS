@@ -41,7 +41,7 @@ class User extends Authenticatable
         return $this->belongsTo('App\Role');
     }
 
-    public function vehicle(){
+    public function vehicles(){
         return $this->hasMany('App\Vehicle');
     }
 

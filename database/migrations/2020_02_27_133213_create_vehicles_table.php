@@ -17,6 +17,7 @@ class CreateVehiclesTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned()->index();
             $table->string('name');
+            $table->string('model');
             $table->integer('year');
             $table->integer('cmc')->unsigned();
             $table->integer('horsepower')->unsigned();

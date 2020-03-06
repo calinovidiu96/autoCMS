@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\MessageBag;
 use App\User;
 use App\Vehicle;
+use App\Visit;
 
-
-class UserVehiclesController extends Controller
+class UserVisitsController extends Controller
 {
-   /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -21,9 +21,10 @@ class UserVehiclesController extends Controller
         //
         $userId = Auth::user()->id;
         $vehicles = Vehicle::where('user_id',$userId)->get();
-        
-        return view('user.vehicles.index', compact('vehicles'));
-       
+
+        $visits = Visit::where('user_id', $userId)->get();
+
+        return view('user.visits.index', compact('vehicles', 'visits'));
     }
 
     /**
@@ -36,10 +37,11 @@ class UserVehiclesController extends Controller
         //
         $userId = Auth::user()->id;
         $vehicles = Vehicle::where('user_id',$userId)->get();
-        return view('user.vehicles.create', compact('vehicles'));
-        
-    }
+       
 
+        $vehiclesForForm = Vehicle::where('user_id',$userId)->pluck('name', 'id')->all();
+        return view('user.visits.create', compact('vehicles','vehiclesForForm', 'userId'));
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -52,30 +54,26 @@ class UserVehiclesController extends Controller
         //
         $userId = Auth::user()->id;
         $vehicles = Vehicle::where('user_id',$userId)->get();
+        
 
         $input = $request->all();
-        $user = Auth::user();
+       
 
         $validatedData = $request->validate([
-            'name'       => 'required',
-            'model'      => 'required',
-            'cmc'        => 'required',
-            'horsepower' => 'required',
+            'operation_name'     => 'required',
+            'schedule_date'      => 'required',
         ],
         [
-            'name.required'       => 'The car brand is required',
-            'model.required'      => 'The car model is required',
-            'cmc.required'        => 'The engine capacity  is required',
-            'horsepower.required' => 'The car horsepower is required'
+            'operation_name.required'     => 'The operation name is required',
+            'schedule_date'               => 'The schedule date  is required',
         ]);
 
-        $user->vehicles()->create($input);
+        $visits = Visit::all();
 
-        return redirect('/user/vehicles');
+        Visit::create($input);
+        return redirect('/user/visits');
+
     }
-
-   
-    
 
     /**
      * Display the specified resource.
@@ -85,7 +83,7 @@ class UserVehiclesController extends Controller
      */
     public function show($id)
     {
-    
+        //
     }
 
     /**
@@ -100,8 +98,10 @@ class UserVehiclesController extends Controller
         $userId = Auth::user()->id;
         $vehicles = Vehicle::where('user_id',$userId)->get();
 
-        $vehicle = Vehicle::findOrFail($id);
-        return view('user.vehicles.edit', compact('vehicle', 'vehicles'));
+        $vehiclesForForm = Vehicle::where('user_id',$userId)->pluck('name', 'id')->all();
+
+        $visit = Visit::findOrFail($id);
+        return view('user.visits.edit', compact('visit', 'vehicles', 'vehiclesForForm', 'userId'));
     }
 
     /**
@@ -115,23 +115,18 @@ class UserVehiclesController extends Controller
     {
         //
         $validatedData = $request->validate([
-            'name'       => 'required',
-            'model'      => 'required',
-            'cmc'        => 'required',
-            'horsepower' => 'required',
+            'operation_name'     => 'required',
+            'schedule_date'      => 'required',
         ],
         [
-            'name.required'       => 'The car brand is required',
-            'model.required'      => 'The car model is required',
-            'cmc.required'        => 'The engine capacity  is required',
-            'horsepower.required' => 'The car horsepower is required'
+            'operation_name.required'     => 'The operation name is required',
+            'schedule_date'               => 'The schedule date  is required',
         ]);
 
         $input = $request->all();
-        Auth::user()->vehicles()->whereId($id)->first()->update($input);
+        Visit::findOrFail($id)->update($request->all());
 
-        return redirect('user/vehicles');
-  
+        return redirect('user/visits');
     }
 
     /**
@@ -143,11 +138,7 @@ class UserVehiclesController extends Controller
     public function destroy($id)
     {
         //
-        Vehicle::findOrFail($id)->delete();
+        Visit::findOrFail($id)->delete();
         return redirect()->back();
     }
-
- 
-
-
 }
