@@ -41,12 +41,12 @@
 
           <div class='form-group'>
             {!! Form::label('cmc', 'Engine Capacity (cmc):') !!}
-            {!! Form::number('cmc', 'value');!!}
+            {!! Form::number('cmc', $vehicle->cmc);!!}
           </div>
 
           <div class='form-group'>
             {!! Form::label('horsepower', 'Horsepower:') !!}
-            {!! Form::number('horsepower', 'value');!!}
+            {!! Form::number('horsepower', $vehicle->horsepower);!!}
           </div>
 
           <div class='form-group'>

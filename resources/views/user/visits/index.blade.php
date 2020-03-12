@@ -15,7 +15,7 @@
                 <tr>
                     <th>Car </th>
                     <th>Operation name</th>
-                    <th>Date when you make the appointment</th>
+                    <th>Date when you made the appointment</th>
                     <th>Scheduled date</th>
                     <th>Edit appointment</th>
                     <th>Delete appointment</th>
