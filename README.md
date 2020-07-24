@@ -1,6 +1,5 @@
 ## About AutoCMS
 "AutoCMS" it's a project done with Laravel framework, a CRUD (Create, Read, Update, Delete) application where users can have an evidence of their own vehicles, repair operations that have been performed (they can add operation name, parts that have been changed, price) and also the users have a reminder where they can note where they want to have next service appointments.
- Here is a demo: https://ovidiu.tadamus.com/public/
  User: demo_user@gmail.com 
  Password: demo_pass
 
