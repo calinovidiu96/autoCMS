@@ -23,7 +23,7 @@ Route::get('/logout', ['as' => 'logout', 'uses' => 'Auth\LoginController@logout'
 
 Route::group(['middleware'=>'user'], function(){
 
-    Route::get('/user', 'UserController@index');
+    Route::get('', 'UserController@index');
     
     Route::resource('user/vehicles', 'UserVehiclesController',['names'=>[
         'index'=>'user.vehicles.index',
