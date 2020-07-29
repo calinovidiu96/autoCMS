@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
+use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
@@ -20,6 +21,13 @@ class LoginController extends Controller
     */
 
     use AuthenticatesUsers;
+    
+    public function logout()
+    {
+        Auth::logout();
+
+    return redirect('/login');
+}
 
     /**
      * Where to redirect users after login.

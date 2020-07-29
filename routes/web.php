@@ -17,13 +17,13 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('/', 'HomeController@index');
 
 Route::get('/logout', ['as' => 'logout', 'uses' => 'Auth\LoginController@logout']);
 
 Route::group(['middleware'=>'user'], function(){
 
-    Route::get('', 'UserController@index');
+    Route::get('/user', 'UserController@index');
     
     Route::resource('user/vehicles', 'UserVehiclesController',['names'=>[
         'index'=>'user.vehicles.index',
@@ -54,7 +54,7 @@ Route::group(['middleware'=>'user'], function(){
 
 
 
-Route::group(['middleware'=>'admin'], function(){
+// Route::group(['middleware'=>'admin'], function(){
 
-});
+// });
 
